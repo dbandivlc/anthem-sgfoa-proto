@@ -1,0 +1,153 @@
+<!-- Selectable Products -->
+       <script type="text/ng-template" id="TRNGvlcSelectableProducts.html">
+       <section class="selectable" ng-repeat="p in control.vlcSI[control.itemsKey] | orderBy: 'OneTimeCost'" ng-class="{'vlc-selectableitem-selected' : p.vlcSelected}">
+
+                <div class="top-container" ng-class="{'recommended': p.ProductRecommend}">
+                
+                 <img src="../servlet/servlet.FileDownload?file={{p.Image}}" width = 100%>
+                 <h2></h2>
+                 <button class="form-control" ng-click='onSelectItem(control, p, $index, this, true)' ng-class="{'icon-v-check': p.vlcSelected}">Select Ticket Type</button>
+        
+                 <div style="text-align:center">
+                 
+                   <h1>{{p.Name}}</h1>
+                   <div>
+                   <h2>${{p.OneTimeCost}}</h2>
+                    </div>
+                   <h2>{{p.Description}}</h2>
+                    </div>
+                  
+                </div>
+
+       <section><label><input type="checkbox" ng-model='p.vlcCompSelected' ng-change="onCompSelectItem(control)" ng-disabled="control.compDisable && !p.vlcCompSelected"/> Compare</label>
+        </section>
+       </section>
+       <p><button ng-if='control.vlcSI && control.vlcSI[control.itemsKey] && control.vlcSI[control.itemsKey].length > 0' ng-click='openModal(this, control)'>Compare</button></p>
+</script>
+
+
+<!-- Modal template -->
+<script type="text/ng-template" id="vlcModalContentCustom.html">
+Â  Â  Â  Â  Â  Â <div class="modal-header">
+Â  Â  Â  Â  Â  Â  Â  Â <h3 class="modal-title">Product Comparison</h3>
+Â  Â  Â  Â  Â  Â </div>
+Â  Â  Â  Â  Â  Â <div class="modal-body vlocity">
+Â  Â  Â  Â  Â  Â  Â  Â <div class="panel panel-default">
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â <table class="table">
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  <thead>
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â <tr>
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â <th>Product Name</th>
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â <th>Feature</th>
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â <th>Price</th>
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â </tr>
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â </thead>
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â <tbody class='ins'>
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â <tr ng-repeat='p in content.recSet'>
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â <td>{{p.Name}}</td>
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â <td>{{p.Description}}
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â <div ng-repeat="a in p.attributes | filterMultiple:{value:['True']}">{{a.name}}</div>
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â </td>
+                                <td>${{p.OneTimeCost}}</td>
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â </tr>
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â </tbody>
+Â  Â  Â  Â  Â  Â  Â  Â  Â  Â </table>
+
+Â  Â  Â  Â  Â  Â  Â  Â </div>
+Â  Â  Â  Â  Â  Â </div>
+Â  Â  Â  Â  Â  Â <div class="modal-footer">
+Â  Â  Â  Â  Â  Â  Â  Â <button class="btn btn-warning" ng-click="cancel()">OK</button>
+Â  Â  Â  Â  Â  Â </div>
+Â  Â  Â  Â </script>
+
+<script type="text/ng-template" id="vlcOrderSummary">
+        <div ng-repeat="vlcPC in ::bpTree.propSetMap.persistentComponent" ng-if="::vlcPC.id=='vlcCart'">
+            <div class="cart-summary">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span class="icon icon-v-cart-line"></span>
+                        <h3 class="panel-title">{{::vlcPC.label}}</h3>
+                        <div class="box"></div>
+                        <!--
+                        <button class="btn btn-primary">CHECKOUT</button>
+                        -->
+                    </div>
+ 
+                    <div class="panel-body">
+ 
+                    <section>
+                        <h3>{{::OmniYourSelections}}</h3>
+                        <div class="item row" ng-repeat="i in bpTree.response.vlcPersistentComponent[bpTree.pcId[vlcPC.pcIndex]][bpTree.pcItemsKey[vlcPC.pcIndex]] | filterMultiple:{provisioningStatus:['New','Pending']}">
+                            <div class="col-md-4 col-sm-4">
+                                <label class="item-name">{{i.itemSObject.PricebookEntry.Product2.Name}}</label>
+                            </div>
+                            <div class="quantity col-md-2 col-sm-2">
+                                <span>x</span>
+                                <input type="number" disabled="true" name="quantity" step="1" ng-model="i.itemSObject.Quantity"/>
+                            </div>
+                            <div class="field col-md-3 col-sm-3">
+                                <label class="field-label">{{::OmniOneTime}}</label>
+                                <p>
+                                    <span class="price old-price color-black" ng-show="i.itemSObject[nsPrefix + 'OneTimeCharge__c'] > i.itemSObject[nsPrefix + 'OneTimeTotal__c']">
+                                        {{i.itemSObject[nsPrefix + 'OneTimeCharge__c'] | currency:bpTree.response.vlcPersistentComponent[bpTree.pcId[vlcPC.pcIndex]].currencySymbol | numFormatFilter }}
+                                    </span>
+                                    <span class="price color-black" ng-class="{'new-price':i.itemSObject[nsPrefix + 'OneTimeCharge__c'] > i.itemSObject[nsPrefix + 'OneTimeTotal__c']}">
+                                    {{i.itemSObject[nsPrefix + 'OneTimeTotal__c'] | currency:bpTree.response.vlcPersistentComponent[bpTree.pcId[vlcPC.pcIndex]].currencySymbol | numFormatFilter }}
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="field col-md-3 col-sm-3">
+                                <label class="field-label">{{::OmniMonthly}}</label>
+                                <p>
+                                    <span class="price old-price color-black" ng-show="i.itemSObject[nsPrefix + 'RecurringCharge__c'] > i.itemSObject[nsPrefix + 'RecurringTotal__c']">
+                                        {{i.itemSObject[nsPrefix + 'RecurringCharge__c'] | currency:bpTree.response.vlcPersistentComponent[bpTree.pcId[vlcPC.pcIndex]].currencySymbol | numFormatFilter }}
+                                    </span>
+                                    <span class="price color-black" ng-class="{'new-price':i.itemSObject[nsPrefix + 'RecurringCharge__c'] > i.itemSObject[nsPrefix + 'RecurringTotal__c']}">
+                                    {{i.itemSObject[nsPrefix + 'RecurringTotal__c'] | currency:bpTree.response.vlcPersistentComponent[bpTree.pcId[vlcPC.pcIndex]].currencySymbol | numFormatFilter }}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+                    <section>
+                        <h3>{{::OmniCurrentSetup}}</h3>
+                        <div class="item row" ng-repeat="i in bpTree.response.vlcPersistentComponent[bpTree.pcId[vlcPC.pcIndex]][bpTree.pcItemsKey[vlcPC.pcIndex]] | filterMultiple:{provisioningStatus:['Active','Inactive']}">
+                            <div class="col-md-4 col-sm-4">
+                                <label class="item-name">{{i.itemSObject.PricebookEntry.Product2.Name}}</label>
+                            </div>
+                            <div class=" quantity col-md-2 col-sm-2">
+                                <span>x</span>
+                                <input type="number" disabled="true" name="quantity" step="1" ng-model="i.itemSObject.Quantity"/>
+                            </div>
+                            <div class="field col-md-3 col-sm-3">
+                                <label class="field-label">{{::OmniOneTime}}</label>
+                                <p>{{i.itemSObject[nsPrefix + 'OneTimeTotal__c'] | currency:bpTree.response.vlcPersistentComponent[bpTree.pcId[vlcPC.pcIndex]].currencySymbol | numFormatFilter }}</p>
+                            </div>
+                            <div class="field col-md-3 col-sm-3">
+                                <label class="field-label">{{::OmniMonthly}}</label>
+                                <p>{{i.itemSObject[nsPrefix + 'RecurringTotal__c'] | currency:bpTree.response.vlcPersistentComponent[bpTree.pcId[vlcPC.pcIndex]].currencySymbol | numFormatFilter }}</p>
+                            </div>
+                        </div>
+                    </section>
+                    <section>
+                        <div class="totals row">
+                            <h4 class="col-md-6 col-sm-6"></h4>
+                            <div class="cost col-md-3 col-sm-3">
+                                <label class="totals-title">{{::OmniOneTime}}</label>
+                                <h4 class="">{{bpTree.response.vlcPersistentComponent[bpTree.pcId[vlcPC.pcIndex]].OneTimeSum | currency:bpTree.response.vlcPersistentComponent[bpTree.pcId[vlcPC.pcIndex]].currencySymbol | numFormatFilter }}</h4>
+                            </div>
+                            <div class="cost col-md-3 col-sm-3">
+                                <label class="totals-title">{{::OmniMonthly}}</label>
+                                <h4 class="">{{bpTree.response.vlcPersistentComponent[bpTree.pcId[vlcPC.pcIndex]].RecurringSum | currency:bpTree.response.vlcPersistentComponent[bpTree.pcId[vlcPC.pcIndex]].currencySymbol | numFormatFilter }}</h4>
+                            </div>
+                        </div>
+                    </section>
+                    </div>
+                    <!--
+                    <div class="panel-footer">
+                        <button class="btn btn-primary">CHECKOUT</button>
+                    </div>
+                    -->
+                </div
+            </div>
+        </div>
+        </script>

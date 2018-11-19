@@ -1,0 +1,84 @@
+<div  class="nds-form-element nds-lookup vlc-slds-knowledge-component"
+      data-select="single" data-scope="single">
+
+    <label class="nds-form-element__label"
+           for="vlcKnowledgeKeyword">
+
+        {{::vlcPC.label}}
+
+    </label>
+
+    <div class="nds-form-element__control nds-input-has-icon nds-input-has-icon_right">
+
+        <input id='vlcKnowledgeKeyword'
+               class="nds-lookup__search-input nds-input"
+               type="text"
+               aria-autocomplete="list"
+               role="combobox"
+               aria-expanded="true"
+               aria-activedescendant=""
+               ng-model-options="{ updateOn: 'change blur' }"
+               ng-model='bpTree.children[bpTree.asIndex].knowledgeKeyword'
+               ng-enter='searchKnowledgeArticle(bpTree.children[bpTree.asIndex], true)'
+               placeholder="{{::customLabels.OmniScriptSearch}}" />
+
+        <!-- OMNI-1718 -->
+        <slds-svg-icon aria-hidden="true"
+		       sprite="'utility'"
+		       icon="'search'"
+		       size="'small'"
+		       extra-classes="'nds-input__icon nds-icon-text-default'">
+        </slds-svg-icon>
+
+    </div>
+
+    <ul ng-show="showCart"
+        class="vlc-slds-knowledge-item">
+
+        <!-- <h5 class="panel-title vlc-knoledge-cat" ng-if="kLabel = getKnowledgeDataCatLabel(bpTree.children[bpTree.asIndex], vlcPC)">{{kLabel}}</h5> -->
+        <li class="nds-item" 
+            ng-repeat="i in bpTree.response.vlcPersistentComponent[bpTree.pcId[vlcPC.pcIndex]][bpTree.pcItemsKey[vlcPC.pcIndex]]">
+
+            <!-- this needs to be the page header and team -->
+            <div class="vlc-slds-knowledge-list-item">
+                <!-- <p ng-click="openArticleInConsole(i)">{{i.title}}</p> -->
+                <div class="vlc-slds-control-action__container">
+
+                    <p vlc-slds-open="openArticleInConsole">{{i.title}}</p>
+
+                    <a href="" ng-click='getArticleBody(bpTree.children[bpTree.asIndex], i)'>
+
+                        <slds-svg-icon aria-hidden="true"
+                                       sprite="'utility'"
+                                       icon="'preview'"
+                                       size="'small'"
+                                       extra-classes="'nds-button__icon nds-button__icon_medium vlc-slds-button_eye'">
+                        </slds-svg-icon>
+
+                        <small>{{ ::customLabels.OmniScriptOpen }}</small>
+                    </a>
+
+                    <a href="" ng-click='getArticleBody(bpTree.children[bpTree.asIndex], i, true)'>
+                        
+                        <slds-svg-icon aria-hidden="true"
+                                       sprite="'utility'"
+                                       icon="'expand'"
+                                       size="'small'"
+                                       extra-classes="'nds-button__icon nds-button__icon_medium vlc-slds-button_exp'">
+                        </slds-svg-icon>
+
+                        <small>{{ ::customLabels.OmniScriptModal }}</small>
+                    </a>
+
+                </div>
+
+                <h3>{{i.summary}}</h3>
+                <h3>{{i.displayType}} | {{::customLabels.OmniScriptLastPublished}} {{i.lastPubDate}}</h3>
+
+            </div>
+
+        </li>
+
+    </ul>
+
+</div>

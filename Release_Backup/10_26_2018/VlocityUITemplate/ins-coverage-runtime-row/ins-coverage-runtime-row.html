@@ -1,0 +1,146 @@
+<div ng-init="productRecord = records; importedScope.records = records" class="slds-p-left_small slds-border_bottom slds-p-bottom_xx-small">
+   <div class="vloc-attr-row slds-row slds-grid slds-wrap"  ng-class="{'slds-m-bottom_small' : record.showMore}" data-card="card-{{cardIndex}}" data-popover-flyout="true" ng-click="$root.config.show = true; importedScope.setAttr(record, cardIndex)">
+      <div class="slds-form-element__control slds-m-horizontal_x-small slds-p-top_large slds-is-absolute">
+         <span class="slds-checkbox" ng-init="record.remove = true">
+         <input ng-disabled="!record.isOptional" type="checkbox" name="add-attrs-{{$index}}--{{$parent.$index}}" id="add-qli-attrs-{{$index}}--{{$parent.$index}}" ng-model="record.remove" ng-change="importedScope.removeQLI(record)"/>
+         <label class="slds-checkbox__label slds-m-around_none" for="add-qli-attrs-{{$index}}--{{$parent.$index}}">
+         <span class="slds-checkbox_faux vloc-check"></span>
+         </label>
+         </span>
+      </div>
+      <div class="slds-col slds-grid slds-wrap">
+         <div class=" slds-p-left_x-large slds-small-show vloc-attr-cell slds-size_1-of-3 slds-m-top_x-small" ng-show="key != 'attributes'">
+            <div class="vloc-attr-title-cell slds-truncate slds-text-heading_label slds-m-top-x-small">
+               <div class="vloc-attrs-header-label slds-truncate">
+                  Name
+               </div>
+            </div>
+            <div class="vloc-attr-data-cell slds-truncate slds-p-top_xx-small">
+               <span class="slds-truncate" title="{{productRecord.productRecord}}">{{productRecord.productName}}</span>
+            </div>
+         </div>
+         <div class="slds-small-show vloc-attr-cell slds-size_1-of-3 slds-m-top_x-small" ng-show="key != 'attributes'">
+            <div class="vloc-attr-title-cell slds-truncate slds-text-heading_label slds-m-top-x-small">
+               <div class="vloc-attrs-header-label slds-truncate">
+                  Premium
+               </div>
+            </div>
+            <div class="vloc-attr-data-cell slds-truncate slds-p-top_xx-small">
+               {{productRecord.TotalPrice.fieldValue | currency}}
+            </div>
+         </div>
+         <div class="vloc-end-row" ng-if="!productRecord.showMore" ng-init="categories = productRecord.attributeCategories.records; showFirstAttr = true" ng-include="'ins-attribute-display-edit.tpl.html'"></div>
+         <div class="slds-no-flex vloc-attr-showmore" ng-if="productRecord.attributeCategories.records[0].productAttributes.records.length > 1 || productRecord.attributeCategories.records.length > 1">
+            <button class="slds-button slds-button_link vloc-attr-showmore-btn vloc-show-less" ng-click="productRecord.showMore = !productRecord.showMore"><span ng-if="!productRecord.showMore">More</span> 
+            <span ng-if="productRecord.showMore">Less</span></button>
+         </div>
+      </div>
+      <div ng-if="productRecord.showMore" class="vloc-attr-row slds-m-bottom_small slds-size_1-of-1 vloc-left-align" ng-init="categories = productRecord.attributeCategories.records" ng-include="'ins-attribute-display-edit.tpl.html'"></div>
+   </div>
+</div>
+<ul bs-collapse data-start-collapsed="true" class="slds-accordion slds-border_bottom" ng-repeat="productRecord in records.childProducts.records | orderBy : '-hasCoverages'"  ng-if="productRecord.lineRecordType === 'CoverageSpec' || productRecord.hasCoverages">
+   <li class="slds-accordion__list-item" >
+      <div ng-if="!productRecord.childProducts" ng-init="record = productRecord" class="slds-p-left_small">
+         <div class="vloc-attr-row slds-row slds-grid slds-wrap"  ng-class="{'slds-m-bottom_small' : record.showMore}" data-card="card-{{cardIndex}}" data-popover-flyout="true" ng-click="$root.config.show = true; importedScope.setAttr(record, cardIndex)">
+            <div class="slds-form-element__control slds-m-horizontal_x-small slds-p-top_large slds-is-absolute">
+               <span class="slds-checkbox" ng-init="record.remove = true">
+               <input ng-disabled="!record.isOptional" type="checkbox" name="add-qli-attrs-{{$index}}--{{$parent.$index}}" id="add-qli-attrs-{{$index}}--{{$parent.$index}}" ng-model="record.remove" ng-change="importedScope.removeQLI(record)"/>
+               <label class="slds-checkbox__label slds-m-around_none" for="add-qli-attrs-{{$index}}--{{$parent.$index}}">
+               <span class="slds-checkbox_faux vloc-check"></span>
+               </label>
+               </span>
+            </div>
+            <div class="slds-col slds-grid slds-wrap">
+               <div class=" slds-p-left_x-large slds-small-show vloc-attr-cell slds-size_1-of-3 slds-m-top_x-small" ng-show="key != 'attributes'">
+                  <div class="vloc-attr-title-cell slds-truncate slds-text-heading_label slds-m-top-x-small">
+                     <div class="vloc-attrs-header-label slds-truncate">
+                        Name
+                     </div>
+                  </div>
+                  <div class="vloc-attr-data-cell slds-truncate slds-p-top_xx-small">
+                     <span ng-if="productRecord.lineRecordType !== 'CoverageSpec'" class="slds-truncate" title="{{productRecord[$root.nsPrefix + 'ItemName__c'].fieldValue}}">{{productRecord[$root.nsPrefix + 'ItemName__c'].fieldValue}}</span>
+                     <span ng-if="productRecord.lineRecordType === 'CoverageSpec'" class="slds-truncate" title="{{productRecord.productName}}">{{productRecord.productName}}</span>
+                  </div>
+               </div>
+               <div class="slds-small-show vloc-attr-cell slds-size_1-of-3 slds-m-top_x-small" ng-show="key != 'attributes'">
+                  <div class="vloc-attr-title-cell slds-truncate slds-text-heading_label slds-m-top-x-small">
+                     <div class="vloc-attrs-header-label slds-truncate">
+                        Premium
+                     </div>
+                  </div>
+                  <div class="vloc-attr-data-cell slds-truncate slds-p-top_xx-small">
+                     {{productRecord.TotalPrice.fieldValue | currency}}
+                  </div>
+               </div>
+               <div class="vloc-end-row" ng-if="!record.showMore" ng-init="categories = record.attributeCategories.records; showFirstAttr = true" ng-include="'ins-attribute-display-edit.tpl.html'"></div>
+               <div class="slds-no-flex vloc-attr-showmore" ng-if="record.attributeCategories.records[0].productAttributes.records.length > 1 || record.attributeCategories.records.length > 1">
+                  <button class="slds-button slds-button_link vloc-attr-showmore-btn vloc-show-less" ng-click="record.showMore = !record.showMore"><span ng-if="!record.showMore">More</span> 
+                  <span ng-if="record.showMore">Less</span></button>
+               </div>
+            </div>
+            <div ng-if="record.showMore" class="vloc-attr-row slds-m-bottom_small slds-size_1-of-1 vloc-left-align" ng-init="categories = record.attributeCategories.records" ng-include="'ins-attribute-display-edit.tpl.html'"></div>
+         </div>
+      </div>
+      <div ng-if="productRecord.childProducts">
+         <section class="slds-accordion__section vloc-accordion_section"  ng-class="{'slds-is-open' : importedScope.isOpen[productRecord.Id.fieldValue]}">
+            <div  data-toggle="accordion-details-{{$index}}" data-target="#accordion-details-{{$index}}" aria-controls="" aria-expanded="false" class="slds-accordion__summary vloc-accordion_summary slds-theme_shade slds-p-top_small slds-p-bottom_small" ng-click="importedScope.isOpen[productRecord.Id.fieldValue] = !importedScope.isOpen[productRecord.Id.fieldValue];" bs-collapse-toggle>
+               <h3 class="slds-p-left_small slds-text-heading_small slds-accordion__summary-heading" ng-class="{'slds-p-left_medium' : !productRecord.childProducts.records}">
+                  <button   class="slds-button slds-button_reset slds-accordion__summary-action">
+                     <slds-button-svg-icon sprite="'utility'" icon="'chevrondown'" 
+                        ng-if="productRecord.childProducts.records" extra-classes="'slds-accordion__summary-action-icon slds-button__icon slds-button__icon_left'"></slds-button-svg-icon>
+                     <span ng-if="productRecord.lineRecordType !== 'CoverageSpec'" class="slds-truncate" title="{{productRecord[$root.nsPrefix + 'ItemName__c'].fieldValue}}">{{productRecord[$root.nsPrefix + 'ItemName__c'].fieldValue}}</span>
+                     <span ng-if="productRecord.lineRecordType === 'CoverageSpec'" class="slds-truncate" title="{{productRecord.productName}}">{{productRecord.productName}}</span>
+                  </button>
+               </h3>
+               <div class="slds-m-right_small"> Premium: {{productRecord.TotalPrice.fieldValue | currency}}
+               </div>
+            </div>
+            <!-- ATTRIBUTE-->
+            <div class="slds-theme_shade slds-p-bottom_small" ng-init="categories = productRecord.attributeCategories.records" ng-include="'ins-attribute-display-edit.tpl.html'"  ng-if="!productRecord.childProducts"></div>
+            <div  id="accordion-details-{{$index}}" ins-collapse-calc-height   bs-collapse-target  class="collapse multi-collapse slds-accordion__content" ng-class="{'overflow-unset': productRecord.Id.fieldValue === importedScope.isOpen}" id="accordion-details-$index" ng-init="importedScope.setIndex(productRecord.childProducts.records); importedScope.quoteId = params.id">
+               <div class="vloc-attr-row slds-row slds-p-left_small"  ng-hide="record.lineRecordType === 'InsuredPartySpec'" ng-class="{'slds-border_top' : $index !== 0}" data-card="card-{{cardIndex}}" data-popover-flyout="true" ng-click="$root.config.show = true; importedScope.setAttr(record, cardIndex)" ng-repeat="record in productRecord.childProducts.records" ng-init="record.isGrandChild = true; record[$root.nsPrefix + 'SubParentItemId__c'] = productRecord.Id">
+                  <div class="slds-col slds-grid slds-wrap">
+                     <div class="slds-form-element__control slds-m-horizontal_x-small slds-p-top_large slds-is-absolute">
+                        <span class="slds-checkbox" ng-init="!record.isOptional ? record.isSelected = true : record.isSelected = false; record.isSelected = record.lineRecordType.length > 0">
+                        <input ng-disabled="!record.isOptional" type="checkbox" name="add-attrs-{{$index}}-{{$parent.$index}}" id="add-qli-attrs-{{$index}}-{{$parent.$index}}" ng-model="record.isSelected" ng-change="importedScope.addRemoveQLI(record)"/>
+                        <label class="slds-checkbox__label slds-m-around_none" for="add-qli-attrs-{{$index}}-{{$parent.$index}}">
+                        <span class="slds-checkbox_faux vloc-check"></span>
+                        </label>
+                        </span>
+                     </div>
+                     <div class="slds-small-show vloc-attr-cell slds-m-top_x-small slds-size_1-of-3" ng-repeat="field in data.fields" ng-show="key != 'attributes'">
+                        <div class="vloc-attr-title-cell slds-truncate slds-text-heading_label slds-m-top-x-small" title="{{field.label}}"  ng-class="{'slds-m-left_x-large slds-p-left_xx-small' : $index < 1}">
+                           <div class="vloc-attrs-header-label slds-truncate">
+                              {{field.label}} 
+                           </div>
+                        </div>
+                        <div class="vloc-attr-data-cell slds-truncate slds-p-top_xx-small">
+                           <span class="vloc-attr-index slds-m-horizontal_small" ng-if="$index === 0"> {{record.index}} </span> 
+                           <span ng-if="field.label !== 'Value' && field.type !== 'BOOLEAN'"> {{record | getter: field | picker: field.type}}</span>
+                           <span ng-if="field.label === 'Value'"> 
+                           <span ng-if="record.valueType !== 'percent'"> {{record | getter: field | picker: record.valueType}}</span>
+                           <span ng-if="importedScope.row.valueType === 'percent'"> {{record[$root.nsPrefix + 'Value__c']}}<span ng-if="importedScope.row[$root.nsPrefix + 'Value__c']">%</span></span>
+                           </span>
+                           <div class="slds-form-element__control slds-text-align_left slds-text-align_center" ng-if="field.type === 'BOOLEAN'">
+                              <span class="slds-checkbox">
+                              <input type="checkbox" name="checkbox-attrs-{{$index}}" id="checkbox-attrs-{{$index}}" ng-disabled="attr.disabled || attr.readonly" ng-model="record[field.name]"/>
+                              <label class="slds-checkbox__label slds-m-around_none" for="checkbox-attrs-{{$index}}">
+                              <span class="slds-checkbox_faux vloc-check"></span>
+                              </label>
+                              </span>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="vloc-end-row" ng-if="!record.showMore" ng-init="categories = record.attributeCategories.records; showFirstAttr = true" ng-include="'ins-attribute-display-edit.tpl.html'"></div>
+                     <div class="slds-no-flex vloc-attr-showmore" ng-if="record.attributeCategories.records[0].productAttributes.records.length > 1 || record.attributeCategories.records.length > 1">
+                        <button class="slds-button slds-button_link vloc-attr-showmore-btn vloc-show-less" ng-click="record.showMore = !record.showMore"><span ng-if="!record.showMore">More</span> 
+                        <span ng-if="record.showMore">Less</span></button>
+                     </div>
+                  </div>
+                  <div ng-if="record.showMore" class="vloc-attr-row slds-m-bottom_small vloc-left-align" ng-init="categories = record.attributeCategories.records" ng-include="'ins-attribute-display-edit.tpl.html'"></div>
+               </div>
+            </div>
+         </section>
+      </div>
+   </li>
+</ul>

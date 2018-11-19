@@ -1,0 +1,34 @@
+<div class='nds-size--1-of-1'>
+    <ng-form name='loopform'
+             class='nds-form-element nds-m-bottom_large nds-p-around_small vlc-slds-range-control'
+             ng-repeat='control in child.eleArray'>
+
+        <div class="nds-form-element__control nds-m-bottom_medium nds-range">
+
+          <label for="{{::control.name}}" class='nds-form-element__label'>
+            <span>{{::control.propSetMap.label}}</span>
+            <span class='nds-required' ng-if='control.req'>*</span>
+            <div class="nds-tooltip_container" ng-if="control.propSetMap.help" ng-include="'vlcNewportTooltip.html'"></div>
+            <div vlc-slds-include="vlcLabelController.html"></div>
+          </label>
+
+            <div class="vlc-control-wrapper">
+                <input ng-init='init(this, control)'
+                       id='{{::control.name}}'
+                       type='range'
+                       vlc-range-slider
+                       ng-change='aggregate(this, control.index, control.indexInParent, true, -1)'
+                       ng-disabled='control.ro'
+                       ng-required='control.req'
+                       name='loopname'
+                       min='{{::control.propSetMap.rangeLow}}'
+                       max='{{::control.propSetMap.rangeHigh}}'
+                       step='{{::control.propSetMap.step}}'
+                       ng-model="control.response"
+                       mask='{{::control.propSetMap.mask}}'
+                       vlc-slds-val-checker="response"/>
+            </div>
+            <div ng-include="::errHTMLId"></div>
+        </div>
+    </ng-form>
+</div>

@@ -1,0 +1,20 @@
+<div style="height:{{::importedScope.service.attributMaxSize*20-5}}px;" class="opv_cardItem">
+     {{importedScope.getItemText($parent.$parent.$parent.item)}}<br> 
+     {{$parent.$parent.$parent.item.additionalName}}
+</div>
+ <table>
+    <tr>
+        <td>
+            <div class="TaskAction" ng-controller="actionRedirectController as ar" ng-init="itemId=$parent.$parent.$parent.$parent.item.id;">
+                <div class="" ng-repeat="action in data.actions | limitTo: (data.limitActionLinksTo?data.limitActionLinksTo:5)" bs-tooltip="action.displayName">
+                     <a href="#" ng-click="ar.performAction(action,params,itemId);">
+                        <i ng-if="!action.imageRef" class="icon {{action.vlocityIcon}}" ></i>
+                    </a>
+                </div>
+            </div>
+        </td>
+        <td>
+            <div class="viewMore" ng-click="importedScope.viewMore($parent.$parent.$parent.item);">View More </div> 
+        </td>
+    </tr>
+</table>

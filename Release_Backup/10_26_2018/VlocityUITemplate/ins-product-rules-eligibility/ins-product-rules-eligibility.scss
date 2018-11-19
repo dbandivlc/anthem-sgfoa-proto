@@ -1,0 +1,36 @@
+.via-slds {
+    .vloc-ins-product-rules-eligibility-container {
+        .vloc-ins-product-rules-eligibility-expression {
+            min-height: 5rem;
+            padding-left: 3.5rem;
+            position: relative;
+
+            .vloc-ins-product-rules-eligibility-number {
+                position: absolute;
+                left: 1rem;
+                font-size: 1rem;
+                width: 1.5rem;
+                height: 1.5rem;
+                line-height: 1.5rem;
+                border-radius: 50%;
+                background-color: lighten(#54698d, 30%);
+                text-align: center;
+                color: white;
+                top: 1.75rem;
+                transition: background-color 150ms ease-in;
+
+                &.rule-saved {
+                    background-color: rgba(#04844b, 0.7);
+                }
+
+                &.rule-unsaved {
+                    background-color: rgba(#ffb75d, 0.7);
+                }
+
+                &.rule-save-error {
+                    background-color: rgba(#c23934, 0.7);
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,106 @@
+<!--LOADER: -->
+<div class="slds-spinner_container" ng-show="!$root.isLoaded">
+   <div class="slds-spinner_brand slds-spinner slds-spinner_medium" aria-hidden="false" role="alert">
+      <div class="slds-spinner__dot-a"></div>
+      <div class="slds-spinner__dot-b"></div>
+   </div>
+</div>
+<div class="via-slds" ng-init="importedScope.getCoverages(records.records[0]); importedScope.quoteId = params.id">
+   <div class="slds-notify_container" ng-if="$root.notification.active">
+      <div class="slds-notify slds-notify_toast" role="alert" ng-class="{'slds-theme_success' : $root.notification.type === 'success', 'slds-theme_error' : $root.notification.type === 'error'}">
+         <span class="slds-assistive-text">Info</span>
+         <button class="slds-button slds-notify__close" title="Close" ng-click="$root.notification.active = false">
+            <slds-svg-icon sprite="'utility'" icon="'close'" extra-classes="'slds-button__icon_left'"></slds-svg-icon>
+         </button>
+         <div class="slds-notify__content">
+            <h2 class="slds-text-heading_small">{{$root.notification.message}}</h2>
+         </div>
+      </div>
+   </div>
+   <div class="slds-grid slds-wrap cards-container">
+      <div vloc-card ng-repeat="card in cards | orderBy:order" ctrl="InsCoverageModelRuntimeController" ng-model="card" data="card" records="records.records[0]" index="{{$index}}" session-id="{{sessionId}}"
+         class="slds-size_1-of-1 slds-border_bottom" use-existing-element-type>
+      </div>
+   </div>
+</div>
+<div class="slds-p-top_xx-large slds-border_bottom" ng-if="$root.optionalCoverages.length > 0">
+   <div class="slds-p-around_small slds-text-heading_medium">Optional Coverages</div>
+   <div class="vloc-row slds-grid slds-wrap slds-size_1-of-1 slds-border_top slds-p-top_small slds-p-horizontal_small" ng-repeat="product in $root.optionalCoverages">
+      <div class="slds-size_1-of-3 slds-p-top_xx-small">
+         <div class="slds-form-element__control slds-text-align_left slds-float_left slds-m-right_small slds-p-top_xx-small">
+            <span class="slds-checkbox">
+            <input type="checkbox" name="add-attrs-{{$index}}" id="add-attrs-{{$index}}" ng-model="product.addCoverage" ng-change="importedScope.addCoverage(product, $index)"/>
+            <label class="slds-checkbox__label slds-m-around_none" for="add-attrs-{{$index}}">
+            <span class="slds-checkbox_faux vloc-check"></span>
+            </label>
+            </span>
+         </div>
+         <div class="vloc-attr-title-cell slds-truncate slds-text-heading_label ">Name</div>
+         <span class="slds-p-top_xx-small"> {{product.productName}} </span>
+      </div>
+      <div class="slds-size_1-of-3 slds-p-top_xx-small">
+         <div class="vloc-attr-title-cell slds-truncate slds-text-heading_label">Premium</div>
+         <span>{{product.Price | currency}}</span><span>{{product.TotalPrice.fieldValue | currency}}</span>
+         <span ng-if="!product.Price && !product.TotalPrice">--</span>
+      </div>
+      <div class="slds-size_1-of-3" ng-init="catt = product.attributeCategories.records[0]">
+         <span ng-repeat="field in catt.productAttributes.records | orderBy : 'displaySequence'" ng-hide="$index !== 0 && !catt.showMore">
+            <div class="vloc-attr-title-cell slds-truncate slds-text-heading_label">{{field.label}}</div>
+            <div class="vloc-attr-data-cell slds-truncate slds-p-top_xx-small">
+               <div ng-if="field.inputType === 'dropdown'" ng-hide="field.hidden">
+                  <div ng-repeat="value in field.values" ng-if="value.value === field.userValues"><span ng-init="field.userValues = value"></span></div>
+                  <div class="slds-form-element__control slds-select_container slds-m-right_large slds-m-bottom_small slds-size_3-of-4">
+                     <select ng-options="cat as cat.label for cat in field.values" ng-model="field.userValues"  class="slds-select slds-m-right_xx-small" id="select-01" ng-change="importedScope.updateQLI($index)">
+                     </select>
+                  </div>
+               </div>
+               <div class="slds-grid slds-p-bottom_x-small" ng-if="field.inputType !== 'dropdown'  && field.inputType !== 'checkbox'">
+                  <div class="slds-size_3-of-4" ng-hide="field.hidden">
+                     <input class="slds-input" ng-model="field.userValues"/>
+                  </div>
+                  <div class="slds-form-element__control slds-text-align_left slds-size_3-of-4" ng-if="field.inputType === 'checkbox'" ng-hide="field.hidden">
+                     <span class="slds-checkbox">
+                     <input type="checkbox" name="attrs-{{$index}}" id="attrs-{{$index}}" ng-model="field.userValues" ng-disabled="!field.isUpdateable"/>
+                     <label class="slds-checkbox__label slds-m-around_none" for="attrs-{{$index}}">
+                     <span class="slds-checkbox_faux vloc-check"></span>
+                     </label>
+                     </span>
+                  </div>
+                  <div class="slds-no-flex vloc-attr-showmore slds-p-left_x-large" ng-if="$index === 0 && catt.productAttributes.records.length > 1">
+                     <button class="slds-button slds-button_link vloc-attr-showmore-btn" ng-click="catt.showMore = !catt.showMore">Show <span ng-if="!catt.showMore">More</span> 
+                     <span ng-if="catt.showMore">Less</span></button>
+                  </div>
+               </div>
+            </div>
+         </span>
+      </div>
+      <div class="slds-size_2-of-3" ng-if="product.attributeCategories.records.length > 1"></div>
+      <div class="slds-size_1-of-3 slds-p-top_x-small" ng-repeat="catt in product.attributeCategories.records" ng-if="$index !== 0 && product.showMore">
+         <span ng-repeat="field in catt.productAttributes.records | orderBy : 'displaySequence'">
+            <div class="vloc-attr-title-cell slds-truncate slds-text-heading_label">{{field.label}}</div>
+            <div class="vloc-attr-data-cell slds-truncate slds-p-top_xx-small">
+               <div ng-if="field.inputType === 'dropdown'">
+                  <div ng-repeat="value in field.values" ng-if="value.value === field.userValues"><span ng-init="field.userValues = value"></span></div>
+                  <div class="slds-form-element__control slds-select_container slds-m-right_large slds-m-bottom_small slds-size_3-of-4">
+                     <select ng-options="cat as cat.label for cat in field.values" ng-model="field.userValues"  class="slds-select slds-m-right_xx-small" id="select-01" ng-change="importedScope.updateQLI($index)">
+                     </select>
+                  </div>
+               </div>
+               <div class="slds-grid slds-p-bottom_x-small" ng-if="field.inputType !== 'dropdown'  && field.inputType !== 'checkbox'">
+                  <div class="slds-size_3-of-4">
+                     <input class="slds-input" ng-model="field.userValues"/>
+                  </div>
+               </div>
+               <div class="slds-form-element__control slds-text-align_left slds-size_3-of-4" ng-if="field.inputType === 'checkbox'">
+                  <span class="slds-checkbox">
+                  <input type="checkbox" name="attrs-{{$index}}" id="attrs-{{$index}}" ng-model="field.userValues" ng-disabled="!field.isUpdateable"/>
+                  <label class="slds-checkbox__label slds-m-around_none" for="attrs-{{$index}}">
+                  <span class="slds-checkbox_faux vloc-check"></span>
+                  </label>
+                  </span>
+               </div>
+            </div>
+         </span>
+      </div>
+   </div>
+</div>

@@ -1,0 +1,36 @@
+{
+    "allowSaveForLater": true,
+    "autoSaveOnStepNext": false,
+    "cancelRedirectPageName": "OmniScriptCancelled",
+    "cancelRedirectTemplateUrl": "vlcCancelled.html",
+    "cancelSource": "%ContextId%",
+    "cancelType": "SObject",
+    "consoleTabLabel": "New",
+    "elementTypeToHTMLTemplateMapping": {
+    },
+    "enableKnowledge": false,
+    "includeCustomization": true,
+    "knowledgeArticleTypeQueryFieldsMap": {
+    },
+    "message": {
+    },
+    "persistentComponent": [
+    ],
+    "saveContentEncoded": false,
+    "saveExpireInDays": null,
+    "saveForLaterRedirectPageName": "sflRedirect",
+    "saveForLaterRedirectTemplateUrl": "vlcSaveForLaterAcknowledge.html",
+    "saveNameTemplate": null,
+    "saveObjectId": "%ContextId%",
+    "seedDataJSON": {
+        "OSseedPricebookName": "Standard",
+        "OSseedProductFamily": "Customer Appreciation"
+    },
+    "ssm": false,
+    "timeTracking": true,
+    "trackingCustomData": {
+    },
+    "visualforcePagesAvailableInPreview": {
+    },
+    "wpm": false
+}

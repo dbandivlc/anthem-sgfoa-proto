@@ -1,0 +1,20 @@
+<div class="ins-os-confirmation-wrapper" ng-if="control.vlcSI[control.itemsKey]">
+    <div class="ins-os-confirmation-container" ng-repeat="p in control.vlcSI[control.itemsKey]">
+        <p>Thank You for Submitting Your Information, and Completing the Quote Process.</p>
+        <div class="slds-grid slds-wrap ins-os-confirmation-card">
+            <div class="slds-size--2-of-2 slds-m-bottom--x-small ins-os-confirmation-m-bottom--x-small">
+                <span class="ins-os-confirmation-label">Quote Number</span>
+                <span class="ins-os-confirmation-value">{{p.quoteConfirmQuoteNumber}}</span>
+            </div>
+            <div class="slds-size--2-of-2 slds-m-bottom--x-small ins-os-confirmation-m-bottom--x-small">
+                <span class="ins-os-confirmation-label">Coverage Product</span>
+                <span class="ins-os-confirmation-value">{{p.quoteConfirmProduct}}</span>
+            </div>            
+            <div class="slds-size--2-of-2 slds-m-bottom--x-small ins-os-confirmation-m-bottom--x-small">
+                <span class="ins-os-confirmation-label">Annual Premium</span>
+                <span class="ins-os-confirmation-value">{{p.quoteConfirmTotalPremium}}</span>
+            </div>
+        </div>
+        <p>We look forward to serving you as your insurance needs evolve.  Please contact us at <a href="https://www.vlocity.com/" target="_blank"><strong>www.vlocity.com</strong></a>, via email at <a href="mailto:customerservice@vlocity.com"><strong>customerservice@vlocity.com</strong></a> or or via phone at <a href="tel:18448562489"><strong>888.Vlocity</strong></a> if we can be of assistance.</p>
+    </div>
+</div>

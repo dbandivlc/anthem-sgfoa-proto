@@ -1,0 +1,38 @@
+<div ng-if='child.articleTitle' ng-init="visible=true"><!-- article when embedded in omniscript -->
+
+    <h3 ng-click="visible = !visible" visible="{{visible}}">
+
+        <a href="{{child.articleLink}}" target="_blank">{{child.articleTitle}}</a>
+
+        <slds-svg-icon aria-hidden="true"
+                           sprite="'utility'"
+                           icon="'chevrondown'"
+                           size="'small'"
+                           extra-classes="'nds-button__icon nds-button__icon_large'">
+        </slds-svg-icon>
+
+        <slds-svg-icon aria-hidden="true"
+                           sprite="'utility'"
+                           icon="'chevronup'"
+                           size="'small'"
+                           extra-classes="'nds-button__icon nds-button__icon_large'">
+        </slds-svg-icon>
+
+    </h3>
+
+    <div ng-show="visible">
+        <p ng-bind-html='child.articleBody'></p>
+    </div>
+
+    <div ng-click="child.articleTitle='';child.articleBody='';child.articleLink=''">
+
+        <slds-svg-icon aria-hidden="true"
+                           sprite="'action'"
+                           icon="'remove'"
+                           size="'small'"
+                           extra-classes="'nds-icon_container nds-button__icon nds-button__icon_large'">
+        </slds-svg-icon>
+
+    </div>
+
+</div>
